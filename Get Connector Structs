@@ -1,0 +1,51 @@
+% This piece of code pulls the locations (xyz coordinates) on postsynaptic 
+%    neuron's skeleton where these connectors contact it
+
+% only load these the first time
+%
+% conns = loadjson('connectors.json'); 
+% pn1Inputs = loadjson('pn1input.json');
+
+clc
+
+%postsynaptic neuron
+pn1ID=362195;
+
+%presynaptic neuron
+ornID=265284;
+
+connfields = fieldnames(conns);
+
+allconns = [];
+
+% loop over all connectors
+
+for i = 1:length(connfields)
+    
+    % c is the working connector
+    
+    c = conns.(connfields{i});
+    
+    % if statement makes sure connector has both pre and postsynaptic
+    % elements
+    
+    if isempty(c.pre) || isempty(c.post)
+        
+    else
+        
+        % if statement checks whether presynaptic neuron is presynaptic at
+        %     this connector AND postsynaptic neuron is postsynaptic
+        % i did (ornID - 1) because that's how the data was imported for
+        %     some reason via 'sk 1' in catmaid
+        
+        if c.pre == (ornID - 1) && ismember(pn1ID, c.post)
+            
+            allconns = cat(1, allconns, c);
+         
+        else
+        end
+        
+    end
+end
+
+allconns
