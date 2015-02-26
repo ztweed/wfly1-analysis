@@ -1,0 +1,46 @@
+% This piece of code generates a list of connector id numbers where 
+%     presynaptic neuron contacts postsynaptic neuron
+% input the presynaptic id, the post synaptic id, and conns (load json
+%     before)
+function [connids] = getconns(preid, postid, connslist)
+
+connfields = fieldnames(connslist);
+
+connids = zeros(1, length(connfields));
+
+% loop over all connectors
+
+for i = 1:length(connfields)
+    
+    % c is the working connector
+    
+    c = connslist.(connfields{i});
+    
+    % if statement makes sure connector has both pre and postsynaptic
+    % elements
+    
+    if isempty(c.pre) || isempty(c.post)
+        
+    else
+        
+        % if statement checks whether presynaptic neuron is presynaptic at
+        %     this connector AND postsynaptic neuron is postsynaptic
+        % i did (ornID - 1) because that's how the data was imported for
+        %     some reason via 'sk 1' in catmaid
+        
+        if c.pre == (preid - 1) && ismember(postid, c.post)
+            
+            connids(1, i) = str2num(connfields{i}([5,7:end]));
+            
+        else
+        end
+        
+    end
+end
+
+connids(connids == 0) = [];
+connids = sort(connids, 'ascend');
+
+end
+
+
