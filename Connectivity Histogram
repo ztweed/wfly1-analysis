@@ -1,0 +1,23 @@
+% Connectivity Histogram
+%  creates a histogram based on the number of connections to pn1
+%  input an array of skeleton id numbers and conns (import json before)
+%  conns = loadjson('connectors.json');
+
+function[numconns] = gethist(idlist, postid, connslist)
+
+clc
+
+numconns = zeros(1, length(idlist));
+
+for i = 1:length(idlist)
+    numconns(i) = length(getconns(idlist(i), postid, connslist));
+end
+
+hist(numconns, [0:2.5:30])
+title('Connectivity between DM6 ORNs and PN1')
+xlabel('Number of Connections to PN1')
+ylabel('Number of ORNs')
+
+helpful_chart = cat(1, idlist, numconns)
+
+end
