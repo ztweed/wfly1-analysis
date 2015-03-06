@@ -1,7 +1,7 @@
 %this function takes a neuron skeleton and a connector list and filters out
 %  nodes that aren't within a specified distance of a synapse
-
-function[connslist] = filter_glom(skelid, neuronskeleton, connslist)
+%relconn is a needed helper function
+function[connslist] = filter_glom(neurid, neuronskeleton, connslist)
 
 clc
 
@@ -16,14 +16,13 @@ for i = 1:length(connfields)
     if isempty(c.pre) || isempty(c.post)
         connslist = rmfield(connslist, connfields(i));
     else
-          if relconn(skelid, c);
+          if relconn(neurid, c);
           else 
               connslist = rmfield(connslist, connfields(i));
           end
               
     end
 end
-
 
 % glom_nodes = zeros(1, length(neuronskeleton.nodes(1:end, 3)));
 %
