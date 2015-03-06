@@ -1,34 +1,29 @@
 %this function takes a neuron skeleton and a connector list and filters out
 %  nodes that aren't within a specified distance of a synapse
 
-function[connids] = filter_glom(skelid, connslist)
+function[connslist] = filter_glom(skelid, neuronskeleton, connslist)
 
 clc
 
 connfields = fieldnames(connslist);
 
-connids = zeros(1, length(connfields));
 
-%skelid = str2num(neuronskeleton{2:end});
-
-%this loop retreives the list of both pre- and post-synaptic connectors
-%   attached to the input neuron
-
+%this loop filters out all input connectors that aren't either pre- or
+%   post-synaptic to the input neuron
 for i = 1:length(connfields)
     c = connslist.(connfields{i});
     
     if isempty(c.pre) || isempty(c.post)
-        
+        connslist = rmfield(connslist, connfields(i));
     else
-        if ismember(skelid, c.pre) || ismember(skelid, c.post)
-            
-            connids(1, i) = str2num(connfields{i}([5,7:end]));
-        else
-        end
+          if relconn(skelid, c);
+          else 
+              connslist = rmfield(connslist, connfields(i));
+          end
+              
     end
 end
 
-connids(connids == 0) = [];
 
 % glom_nodes = zeros(1, length(neuronskeleton.nodes(1:end, 3)));
 %
