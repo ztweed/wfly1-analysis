@@ -1,0 +1,15 @@
+%this helper function to filter_glom determines if a given connector is
+%either pre- or postsynaptic to the input neuron
+
+function[bool] = relconn(neurid, c)
+
+if isempty(c.pre) || isempty(c.post)
+    bool = 0;
+else
+    if ismember((neurid-1), c.pre) || ismember((neurid-1), c.post)
+        bool = 1;
+    else
+        bool = 0;
+    end
+end
+end
